@@ -21,6 +21,6 @@ export function Eval_real(p1: U) {
 }
 
 export function real(p: U): U {
-  const p1 = rect(p);
+  let p1 = rect(p);
   return divide(add(p1, conjugate(p1)), integer(2));
 }

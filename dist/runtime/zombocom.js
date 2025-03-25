@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.exec = exports.parse = void 0;
-const run_1 = require("./run");
-const stack_1 = require("./stack");
-const bignum_1 = require("../sources/bignum");
-const list_1 = require("../sources/list");
-const scan_1 = require("../sources/scan");
-const defs_1 = require("./defs");
-const init_1 = require("./init");
-const symbol_1 = require("./symbol");
+var run_1 = require("./run");
+var stack_1 = require("./stack");
+var bignum_1 = require("../sources/bignum");
+var list_1 = require("../sources/list");
+var scan_1 = require("../sources/scan");
+var defs_1 = require("./defs");
+var init_1 = require("./init");
+var symbol_1 = require("./symbol");
 if (!defs_1.defs.inited) {
     defs_1.defs.inited = true;
     init_1.init();
@@ -54,14 +54,14 @@ exports.parse = parse;
 // the corresponding function is pushed at the top of the stack
 function exec(name, ...argus) {
     let result;
-    const fn = symbol_1.get_binding(symbol_1.usr_symbol(name));
+    var fn = symbol_1.get_binding(symbol_1.usr_symbol(name));
     run_1.check_stack();
     stack_1.push(fn);
     for (let argu of Array.from(argus)) {
         parse_internal(argu);
     }
     list_1.list(1 + argus.length);
-    const p1 = stack_1.pop();
+    var p1 = stack_1.pop();
     stack_1.push(p1);
     try {
         run_1.top_level_eval();
