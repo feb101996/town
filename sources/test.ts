@@ -27,7 +27,7 @@ import { simplify } from './simplify';
 // Works like a switch statement. Could also be used for piecewise
 // functions? TODO should probably be called "switch"?
 export function Eval_test(p1: U) {
-  const orig = p1;
+  var orig = p1;
   p1 = cdr(p1);
   while (iscons(p1)) {
     // odd number of parameters means that the
@@ -37,7 +37,7 @@ export function Eval_test(p1: U) {
       return Eval(car(p1)); // default case
     }
 
-    const checkResult = isZeroLikeOrNonZeroLikeOrUndetermined(car(p1));
+    var checkResult = isZeroLikeOrNonZeroLikeOrUndetermined(car(p1));
     if (checkResult == null) {
       // we couldn't determine the result
       // of a test. This means we can't conclude
@@ -67,7 +67,7 @@ export function Eval_test(p1: U) {
 // unaveluated test, which is the same as saying "maybe".
 export function Eval_testeq(p1: U) {
   // first try without simplifyng both sides
-  const orig = p1;
+  var orig = p1;
   let subtractionResult = subtract(Eval(cadr(p1)), Eval(caddr(p1)));
 
   // OK so we are doing something tricky here
@@ -87,8 +87,8 @@ export function Eval_testeq(p1: U) {
   // we didn't get a simple numeric result but
   // let's try again after doing
   // a simplification on both sides
-  const arg1 = simplify(Eval(cadr(p1)));
-  const arg2 = simplify(Eval(caddr(p1)));
+  var arg1 = simplify(Eval(cadr(p1)));
+  var arg2 = simplify(Eval(caddr(p1)));
   subtractionResult = subtract(arg1, arg2);
 
   checkResult = isZeroLikeOrNonZeroLikeOrUndetermined(subtractionResult);
@@ -106,8 +106,8 @@ export function Eval_testeq(p1: U) {
 
 // Relational operators expect a numeric result for operand difference.
 export function Eval_testge(p1: U) {
-  const orig = p1;
-  const comparison = cmp_args(p1);
+  var orig = p1;
+  var comparison = cmp_args(p1);
 
   if (comparison == null) {
     return orig;
@@ -121,8 +121,8 @@ export function Eval_testge(p1: U) {
 }
 
 export function Eval_testgt(p1: U) {
-  const orig = p1;
-  const comparison = cmp_args(p1);
+  var orig = p1;
+  var comparison = cmp_args(p1);
 
   if (comparison == null) {
     return orig;
@@ -136,8 +136,8 @@ export function Eval_testgt(p1: U) {
 }
 
 export function Eval_testle(p1: U) {
-  const orig = p1;
-  const comparison = cmp_args(p1);
+  var orig = p1;
+  var comparison = cmp_args(p1);
 
   if (comparison == null) {
     return orig;
@@ -151,8 +151,8 @@ export function Eval_testle(p1: U) {
 }
 
 export function Eval_testlt(p1: U) {
-  const orig = p1;
-  const comparison = cmp_args(p1);
+  var orig = p1;
+  var comparison = cmp_args(p1);
 
   if (comparison == null) {
     return orig;
@@ -167,8 +167,8 @@ export function Eval_testlt(p1: U) {
 
 // not definition
 export function Eval_not(p1: U) {
-  const wholeAndExpression = p1;
-  const checkResult = isZeroLikeOrNonZeroLikeOrUndetermined(cadr(p1));
+  var wholeAndExpression = p1;
+  var checkResult = isZeroLikeOrNonZeroLikeOrUndetermined(cadr(p1));
   if (checkResult == null) {
     // inconclusive test on predicate
     return wholeAndExpression;
@@ -199,12 +199,12 @@ Logical-and of predicate expressions.
 
 // and definition
 export function Eval_and(p1: U) {
-  const wholeAndExpression = p1;
+  var wholeAndExpression = p1;
   let andPredicates = cdr(wholeAndExpression);
   let somePredicateUnknown = false;
   while (iscons(andPredicates)) {
     // eval each predicate
-    const checkResult = isZeroLikeOrNonZeroLikeOrUndetermined(
+    var checkResult = isZeroLikeOrNonZeroLikeOrUndetermined(
       car(andPredicates)
     );
 
@@ -244,12 +244,12 @@ export function Eval_and(p1: U) {
 
 // or definition
 export function Eval_or(p1: U) {
-  const wholeOrExpression = p1;
+  var wholeOrExpression = p1;
   let orPredicates = cdr(wholeOrExpression);
   let somePredicateUnknown = false;
   while (iscons(orPredicates)) {
     // eval each predicate
-    const checkResult = isZeroLikeOrNonZeroLikeOrUndetermined(
+    var checkResult = isZeroLikeOrNonZeroLikeOrUndetermined(
       car(orPredicates)
     );
 
@@ -295,8 +295,8 @@ export function Eval_or(p1: U) {
 // a bit like we do in Eval_testeq
 function cmp_args(p1: U): Sign {
   let t: Sign = 0;
-  const arg1 = simplify(Eval(cadr(p1)));
-  const arg2 = simplify(Eval(caddr(p1)));
+  var arg1 = simplify(Eval(cadr(p1)));
+  var arg2 = simplify(Eval(caddr(p1)));
   p1 = subtract(arg1, arg2);
 
   // try floating point if necessary
