@@ -1,41 +1,41 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.simplify_trig = exports.simplify = exports.simplifyForCodeGeneration = exports.Eval_simplify = void 0;
-const alloc_1 = require("../runtime/alloc");
-const count_1 = require("../runtime/count");
-const defs_1 = require("../runtime/defs");
-const find_1 = require("../runtime/find");
-const run_1 = require("../runtime/run");
-const stack_1 = require("../runtime/stack");
-const symbol_1 = require("../runtime/symbol");
-const misc_1 = require("../sources/misc");
-const add_1 = require("./add");
-const bignum_1 = require("./bignum");
-const clock_1 = require("./clock");
-const condense_1 = require("./condense");
-const eval_1 = require("./eval");
-const float_1 = require("./float");
-const inner_1 = require("./inner");
-const is_1 = require("./is");
-const list_1 = require("./list");
-const multiply_1 = require("./multiply");
-const polar_1 = require("./polar");
-const power_1 = require("./power");
-const rationalize_1 = require("./rationalize");
-const real_1 = require("./real");
-const rect_1 = require("./rect");
-const roots_1 = require("./roots");
-const simfac_1 = require("./simfac");
-const tensor_1 = require("./tensor");
-const transform_1 = require("./transform");
-const transpose_1 = require("./transpose");
-const denominator_1 = require("./denominator");
-const gcd_1 = require("./gcd");
-const factor_1 = require("./factor");
-const numerator_1 = require("./numerator");
+var alloc_1 = require("../runtime/alloc");
+var count_1 = require("../runtime/count");
+var defs_1 = require("../runtime/defs");
+var find_1 = require("../runtime/find");
+var run_1 = require("../runtime/run");
+var stack_1 = require("../runtime/stack");
+var symbol_1 = require("../runtime/symbol");
+var misc_1 = require("../sources/misc");
+var add_1 = require("./add");
+var bignum_1 = require("./bignum");
+var clock_1 = require("./clock");
+var condense_1 = require("./condense");
+var eval_1 = require("./eval");
+var float_1 = require("./float");
+var inner_1 = require("./inner");
+var is_1 = require("./is");
+var list_1 = require("./list");
+var multiply_1 = require("./multiply");
+var polar_1 = require("./polar");
+var power_1 = require("./power");
+var rationalize_1 = require("./rationalize");
+var real_1 = require("./real");
+var rect_1 = require("./rect");
+var roots_1 = require("./roots");
+var simfac_1 = require("./simfac");
+var tensor_1 = require("./tensor");
+var transform_1 = require("./transform");
+var transpose_1 = require("./transpose");
+var denominator_1 = require("./denominator");
+var gcd_1 = require("./gcd");
+var factor_1 = require("./factor");
+var numerator_1 = require("./numerator");
 function Eval_simplify(p1) {
-    const arg = runUserDefinedSimplifications(defs_1.cadr(p1));
-    const result = simplify(eval_1.Eval(arg));
+    var arg = runUserDefinedSimplifications(defs_1.cadr(p1));
+    var result = simplify(eval_1.Eval(arg));
     stack_1.push(result);
 }
 exports.Eval_simplify = Eval_simplify;
@@ -59,7 +59,7 @@ function runUserDefinedSimplifications(p) {
     if (defs_1.DEBUG) {
         console.log(`runUserDefinedSimplifications after eval no expanding: ${F1}`);
         console.log('patterns to be checked: ');
-        for (const simplification of Array.from(defs_1.defs.userSimplificationsInListForm)) {
+        for (var simplification of Array.from(defs_1.defs.userSimplificationsInListForm)) {
             console.log(`...${simplification}`);
         }
     }
@@ -69,7 +69,7 @@ function runUserDefinedSimplifications(p) {
         numberOfRulesApplications < defs_1.MAX_CONSECUTIVE_APPLICATIONS_OF_ALL_RULES) {
         atLeastOneSuccessInRouldOfRulesApplications = false;
         numberOfRulesApplications++;
-        for (const eachSimplification of Array.from(defs_1.defs.userSimplificationsInListForm)) {
+        for (var eachSimplification of Array.from(defs_1.defs.userSimplificationsInListForm)) {
             let success = true;
             let eachConsecutiveRuleApplication = 0;
             while (success &&
@@ -105,14 +105,14 @@ function runUserDefinedSimplifications(p) {
 }
 // ------------------------
 function simplifyForCodeGeneration(p) {
-    const arg = runUserDefinedSimplifications(p);
+    var arg = runUserDefinedSimplifications(p);
     defs_1.defs.codeGen = true;
     // in "codeGen" mode we completely
     // eval and simplify the function bodies
     // because we really want to resolve all
     // the variables indirections and apply
     // all the simplifications we can.
-    const result = simplify(arg);
+    var result = simplify(arg);
     defs_1.defs.codeGen = false;
     return result;
 }
@@ -124,20 +124,20 @@ function simplify(p1) {
     // indirections and we simplify everything
     // we can given the current assignments.
     if (defs_1.defs.codeGen && defs_1.car(p1) === defs_1.symbol(defs_1.FUNCTION)) {
-        const fbody = defs_1.cadr(p1);
+        var fbody = defs_1.cadr(p1);
         // let's simplify the body so we give it a
         // compact form
-        const p3 = simplify(eval_1.Eval(fbody));
+        var p3 = simplify(eval_1.Eval(fbody));
         // replace the evaled body
-        const args = defs_1.caddr(p1); // p5 is B
+        var args = defs_1.caddr(p1); // p5 is B
         p1 = list_1.makeList(defs_1.symbol(defs_1.FUNCTION), p3, args);
     }
     if (defs_1.istensor(p1)) {
         return simplify_tensor(p1);
     }
     if (find_1.Find(p1, defs_1.symbol(defs_1.FACTORIAL))) {
-        const p2 = simfac_1.simfac(p1);
-        const p3 = simfac_1.simfac(rationalize_1.rationalize(p1));
+        var p2 = simfac_1.simfac(p1);
+        var p3 = simfac_1.simfac(rationalize_1.rationalize(p1));
         p1 = count_1.count(p2) < count_1.count(p3) ? p2 : p3;
     }
     p1 = f10(p1);
@@ -185,7 +185,7 @@ function f1(p1) {
     if (!defs_1.isadd(p1)) {
         return p1;
     }
-    const p2 = rationalize_1.rationalize(p1);
+    var p2 = rationalize_1.rationalize(p1);
     if (count_1.count(p2) < count_1.count(p1)) {
         p1 = p2;
     }
@@ -196,7 +196,7 @@ function f2(p1) {
     if (!defs_1.isadd(p1)) {
         return p1;
     }
-    const p2 = condense_1.Condense(p1);
+    var p2 = condense_1.Condense(p1);
     if (count_1.count(p2) <= count_1.count(p1)) {
         p1 = p2;
     }
@@ -204,14 +204,14 @@ function f2(p1) {
 }
 // this simplifies forms like (A-B) / (B-A)
 function f3(p1) {
-    const p2 = rationalize_1.rationalize(multiply_1.negate(rationalize_1.rationalize(multiply_1.negate(rationalize_1.rationalize(p1)))));
+    var p2 = rationalize_1.rationalize(multiply_1.negate(rationalize_1.rationalize(multiply_1.negate(rationalize_1.rationalize(p1)))));
     if (count_1.count(p2) < count_1.count(p1)) {
         p1 = p2;
     }
     return p1;
 }
 function f10(p1) {
-    const carp1 = defs_1.car(p1);
+    var carp1 = defs_1.car(p1);
     if (carp1 === defs_1.symbol(defs_1.MULTIPLY) || defs_1.isinnerordot(p1)) {
         // both operands a transpose?
         if (defs_1.car(defs_1.car(defs_1.cdr(p1))) === defs_1.symbol(defs_1.TRANSPOSE) &&
@@ -219,8 +219,8 @@ function f10(p1) {
             if (defs_1.DEBUG) {
                 console.log(`maybe collecting a transpose ${p1}`);
             }
-            const a = defs_1.cadr(defs_1.car(defs_1.cdr(p1)));
-            const b = defs_1.cadr(defs_1.car(defs_1.cdr(defs_1.cdr(p1))));
+            var a = defs_1.cadr(defs_1.car(defs_1.cdr(p1)));
+            var b = defs_1.cadr(defs_1.car(defs_1.cdr(defs_1.cdr(p1))));
             let arg1;
             if (carp1 === defs_1.symbol(defs_1.MULTIPLY)) {
                 arg1 = multiply_1.multiply(a, b);
@@ -231,8 +231,8 @@ function f10(p1) {
             else {
                 arg1 = stack_1.pop();
             }
-            // const p2 = noexpand(transpose, arg1, Constants.one, integer(2));
-            const p2 = defs_1.noexpand(() => {
+            // var p2 = noexpand(transpose, arg1, Constants.one, integer(2));
+            var p2 = defs_1.noexpand(() => {
                 return transpose_1.transpose(arg1, defs_1.Constants.one, bignum_1.integer(2));
             });
             if (count_1.count(p2) < count_1.count(p1)) {
@@ -250,7 +250,7 @@ function f4(p1) {
     if (is_1.isZeroAtomOrTensor(p1)) {
         return p1;
     }
-    const p2 = rationalize_1.rationalize(multiply_1.inverse(rationalize_1.rationalize(multiply_1.inverse(rationalize_1.rationalize(p1)))));
+    var p2 = rationalize_1.rationalize(multiply_1.inverse(rationalize_1.rationalize(multiply_1.inverse(rationalize_1.rationalize(p1)))));
     if (count_1.count(p2) < count_1.count(p1)) {
         p1 = p2;
     }
@@ -265,7 +265,7 @@ function f5(p1) {
     if (!find_1.Find(p1, defs_1.symbol(defs_1.SIN)) && !find_1.Find(p1, defs_1.symbol(defs_1.COS))) {
         return p1;
     }
-    const p2 = p1;
+    var p2 = p1;
     defs_1.defs.trigmode = 1;
     let p3 = eval_1.Eval(p2);
     defs_1.defs.trigmode = 2;
@@ -346,8 +346,8 @@ function simplify_rectToClock(p1) {
     return [p1];
 }
 function simplify_polarRect(p1) {
-    const tmp = polarRectAMinusOneBase(p1);
-    const p2 = eval_1.Eval(tmp); // put new (hopefully simplified expr) in p2
+    var tmp = polarRectAMinusOneBase(p1);
+    var p2 = eval_1.Eval(tmp); // put new (hopefully simplified expr) in p2
     if (count_1.count(p2) < count_1.count(p1)) {
         p1 = p2;
     }
@@ -359,14 +359,14 @@ function polarRectAMinusOneBase(p1) {
     }
     if (misc_1.equal(defs_1.car(p1), defs_1.symbol(defs_1.POWER)) && is_1.isminusone(defs_1.cadr(p1))) {
         // base we just said is minus 1
-        const base = multiply_1.negate(defs_1.Constants.one);
+        var base = multiply_1.negate(defs_1.Constants.one);
         // exponent
-        const exponent = polarRectAMinusOneBase(defs_1.caddr(p1));
+        var exponent = polarRectAMinusOneBase(defs_1.caddr(p1));
         // try to simplify it using polar and rect
         return rect_1.rect(polar_1.polar(power_1.power(base, exponent)));
     }
     if (defs_1.iscons(p1)) {
-        const arr = [];
+        var arr = [];
         while (defs_1.iscons(p1)) {
             //console.log("recursing on: " + car(p1).toString())
             arr.push(polarRectAMinusOneBase(defs_1.car(p1)));
@@ -392,7 +392,7 @@ function simplify_nested_radicals(p1) {
         }
         return [false, p1];
     }
-    const [simplificationWithoutCondense, somethingSimplified,] = take_care_of_nested_radicals(p1);
+    var [simplificationWithoutCondense, somethingSimplified,] = take_care_of_nested_radicals(p1);
     // in this paragraph we check whether we can collect
     // common factors without complicating the expression
     // in particular we want to avoid
@@ -403,7 +403,7 @@ function simplify_nested_radicals(p1) {
     //   17/2+3/2*5^(1/2) into 1/2*(17+3*5^(1/2))
     // so what we do is we count the powers and we check
     // which version has the least number of them.
-    const simplificationWithCondense = defs_1.noexpand(condense_1.yycondense, simplificationWithoutCondense);
+    var simplificationWithCondense = defs_1.noexpand(condense_1.yycondense, simplificationWithoutCondense);
     //console.log("occurrences of powers in " + simplificationWithoutCondense + " :" + countOccurrencesOfSymbol(symbol(POWER),simplificationWithoutCondense))
     //console.log("occurrences of powers in " + simplificationWithCondense + " :" + countOccurrencesOfSymbol(symbol(POWER),simplificationWithCondense))
     p1 =
@@ -431,8 +431,8 @@ function take_care_of_nested_radicals(p1) {
 }
 function _nestedPowerSymbol(p1) {
     //console.log("ok it's a power ")
-    const base = defs_1.cadr(p1);
-    const exponent = defs_1.caddr(p1);
+    var base = defs_1.cadr(p1);
+    var exponent = defs_1.caddr(p1);
     //console.log("possible double radical base: " + base)
     //console.log("possible double radical exponent: " + exponent)
     if (is_1.isminusone(exponent) ||
@@ -442,9 +442,9 @@ function _nestedPowerSymbol(p1) {
         return [p1, false];
     }
     //console.log("ok there is a radix with a term inside")
-    const firstTerm = defs_1.cadr(base);
+    var firstTerm = defs_1.cadr(base);
     take_care_of_nested_radicals(firstTerm);
-    const secondTerm = defs_1.caddr(base);
+    var secondTerm = defs_1.caddr(base);
     take_care_of_nested_radicals(secondTerm);
     let numberOfTerms = 0;
     let countingTerms = base;
@@ -456,32 +456,32 @@ function _nestedPowerSymbol(p1) {
         return [p1, false];
     }
     // list here all the factors
-    const { commonBases, termsThatAreNotPowers } = _listAll(secondTerm);
+    var { commonBases, termsThatAreNotPowers } = _listAll(secondTerm);
     if (commonBases.length === 0) {
         return [p1, false];
     }
-    const A = firstTerm;
-    const C = commonBases.reduce(multiply_1.multiply, defs_1.Constants.one);
-    const B = termsThatAreNotPowers.reduce(multiply_1.multiply, defs_1.Constants.one);
+    var A = firstTerm;
+    var C = commonBases.reduce(multiply_1.multiply, defs_1.Constants.one);
+    var B = termsThatAreNotPowers.reduce(multiply_1.multiply, defs_1.Constants.one);
     let temp;
     if (is_1.equalq(exponent, 1, 3)) {
-        const checkSize1 = multiply_1.divide(multiply_1.multiply(multiply_1.negate(A), C), B); // 4th coeff
-        const result1 = bignum_1.nativeDouble(float_1.yyfloat(real_1.real(checkSize1)));
+        var checkSize1 = multiply_1.divide(multiply_1.multiply(multiply_1.negate(A), C), B); // 4th coeff
+        var result1 = bignum_1.nativeDouble(float_1.yyfloat(real_1.real(checkSize1)));
         if (Math.abs(result1) > Math.pow(2, 32)) {
             return [p1, false];
         }
-        const checkSize2 = multiply_1.multiply(bignum_1.integer(3), C); // 3rd coeff
-        const result2 = bignum_1.nativeDouble(float_1.yyfloat(real_1.real(checkSize2)));
+        var checkSize2 = multiply_1.multiply(bignum_1.integer(3), C); // 3rd coeff
+        var result2 = bignum_1.nativeDouble(float_1.yyfloat(real_1.real(checkSize2)));
         if (Math.abs(result2) > Math.pow(2, 32)) {
             return [p1, false];
         }
-        const arg1b = multiply_1.multiply(checkSize2, defs_1.symbol(defs_1.SECRETX));
-        const checkSize3 = multiply_1.divide(multiply_1.multiply(bignum_1.integer(-3), A), B); // 2nd coeff
-        const result3 = bignum_1.nativeDouble(float_1.yyfloat(real_1.real(checkSize3)));
+        var arg1b = multiply_1.multiply(checkSize2, defs_1.symbol(defs_1.SECRETX));
+        var checkSize3 = multiply_1.divide(multiply_1.multiply(bignum_1.integer(-3), A), B); // 2nd coeff
+        var result3 = bignum_1.nativeDouble(float_1.yyfloat(real_1.real(checkSize3)));
         if (Math.abs(result3) > Math.pow(2, 32)) {
             return [p1, false];
         }
-        const result = add_1.add_all([
+        var result = add_1.add_all([
             checkSize1,
             arg1b,
             multiply_1.multiply(checkSize3, power_1.power(defs_1.symbol(defs_1.SECRETX), bignum_1.integer(2))),
@@ -490,19 +490,19 @@ function _nestedPowerSymbol(p1) {
         temp = result;
     }
     else if (is_1.equalq(exponent, 1, 2)) {
-        const result1 = bignum_1.nativeDouble(float_1.yyfloat(real_1.real(C)));
+        var result1 = bignum_1.nativeDouble(float_1.yyfloat(real_1.real(C)));
         if (Math.abs(result1) > Math.pow(2, 32)) {
             return [p1, false];
         }
-        const checkSize = multiply_1.divide(multiply_1.multiply(bignum_1.integer(-2), A), B);
-        const result2 = bignum_1.nativeDouble(float_1.yyfloat(real_1.real(checkSize)));
+        var checkSize = multiply_1.divide(multiply_1.multiply(bignum_1.integer(-2), A), B);
+        var result2 = bignum_1.nativeDouble(float_1.yyfloat(real_1.real(checkSize)));
         if (Math.abs(result2) > Math.pow(2, 32)) {
             return [p1, false];
         }
         temp = add_1.add(C, add_1.add(multiply_1.multiply(checkSize, defs_1.symbol(defs_1.SECRETX)), multiply_1.multiply(defs_1.Constants.one, power_1.power(defs_1.symbol(defs_1.SECRETX), bignum_1.integer(2)))));
     }
     defs_1.defs.recursionLevelNestedRadicalsRemoval++;
-    const r = roots_1.roots(temp, defs_1.symbol(defs_1.SECRETX));
+    var r = roots_1.roots(temp, defs_1.symbol(defs_1.SECRETX));
     defs_1.defs.recursionLevelNestedRadicalsRemoval--;
     if (misc_1.equal(r[r.length - 1], defs_1.symbol(defs_1.NIL))) {
         if (defs_1.DEBUG) {
@@ -511,55 +511,55 @@ function _nestedPowerSymbol(p1) {
         return [p1, false];
     }
     // exclude the solutions with radicals
-    const possibleSolutions = r[r.length - 1].elem.filter((sol) => !find_1.Find(sol, defs_1.symbol(defs_1.POWER)));
+    var possibleSolutions = r[r.length - 1].elem.filter((sol) => !find_1.Find(sol, defs_1.symbol(defs_1.POWER)));
     if (possibleSolutions.length === 0) {
         return [p1, false];
     }
-    const possibleRationalSolutions = [];
-    const realOfpossibleRationalSolutions = [];
+    var possibleRationalSolutions = [];
+    var realOfpossibleRationalSolutions = [];
     //console.log("checking the one with maximum real part ")
-    for (const i of Array.from(possibleSolutions)) {
-        const result = bignum_1.nativeDouble(float_1.yyfloat(real_1.real(i)));
+    for (var i of Array.from(possibleSolutions)) {
+        var result = bignum_1.nativeDouble(float_1.yyfloat(real_1.real(i)));
         possibleRationalSolutions.push(i);
         realOfpossibleRationalSolutions.push(result);
     }
-    const whichRationalSolution = realOfpossibleRationalSolutions.indexOf(Math.max.apply(Math, realOfpossibleRationalSolutions));
-    const SOLUTION = possibleRationalSolutions[whichRationalSolution];
+    var whichRationalSolution = realOfpossibleRationalSolutions.indexOf(Math.max.apply(Math, realOfpossibleRationalSolutions));
+    var SOLUTION = possibleRationalSolutions[whichRationalSolution];
     if (!is_1.equalq(exponent, 1, 3) && !is_1.equalq(exponent, 1, 2)) {
         return [p1, false];
     }
     if (is_1.equalq(exponent, 1, 3)) {
-        const lowercase_b = power_1.power(multiply_1.divide(A, add_1.add(power_1.power(SOLUTION, bignum_1.integer(3)), multiply_1.multiply(multiply_1.multiply(bignum_1.integer(3), C), SOLUTION))), bignum_1.rational(1, 3));
-        const lowercase_a = multiply_1.multiply(lowercase_b, SOLUTION);
-        const result = simplify(add_1.add(multiply_1.multiply(lowercase_b, power_1.power(C, bignum_1.rational(1, 2))), lowercase_a));
+        var lowercase_b = power_1.power(multiply_1.divide(A, add_1.add(power_1.power(SOLUTION, bignum_1.integer(3)), multiply_1.multiply(multiply_1.multiply(bignum_1.integer(3), C), SOLUTION))), bignum_1.rational(1, 3));
+        var lowercase_a = multiply_1.multiply(lowercase_b, SOLUTION);
+        var result = simplify(add_1.add(multiply_1.multiply(lowercase_b, power_1.power(C, bignum_1.rational(1, 2))), lowercase_a));
         return [result, true];
     }
     if (is_1.equalq(exponent, 1, 2)) {
-        const lowercase_b = power_1.power(multiply_1.divide(A, add_1.add(power_1.power(SOLUTION, bignum_1.integer(2)), C)), bignum_1.rational(1, 2));
-        const lowercase_a = multiply_1.multiply(lowercase_b, SOLUTION);
-        const possibleNewExpression = simplify(add_1.add(multiply_1.multiply(lowercase_b, power_1.power(C, bignum_1.rational(1, 2))), lowercase_a));
-        const possibleNewExpressionValue = float_1.yyfloat(real_1.real(possibleNewExpression));
+        var lowercase_b = power_1.power(multiply_1.divide(A, add_1.add(power_1.power(SOLUTION, bignum_1.integer(2)), C)), bignum_1.rational(1, 2));
+        var lowercase_a = multiply_1.multiply(lowercase_b, SOLUTION);
+        var possibleNewExpression = simplify(add_1.add(multiply_1.multiply(lowercase_b, power_1.power(C, bignum_1.rational(1, 2))), lowercase_a));
+        var possibleNewExpressionValue = float_1.yyfloat(real_1.real(possibleNewExpression));
         if (!is_1.isnegativenumber(possibleNewExpressionValue)) {
             return [possibleNewExpression, true];
         }
-        const result = simplify(add_1.add(multiply_1.multiply(multiply_1.negate(lowercase_b), power_1.power(C, bignum_1.rational(1, 2))), multiply_1.negate(lowercase_a)));
+        var result = simplify(add_1.add(multiply_1.multiply(multiply_1.negate(lowercase_b), power_1.power(C, bignum_1.rational(1, 2))), multiply_1.negate(lowercase_a)));
         return [result, true];
     }
     return [null, true];
 }
 function _listAll(secondTerm) {
     let commonInnerExponent = null;
-    const commonBases = [];
-    const termsThatAreNotPowers = [];
+    var commonBases = [];
+    var termsThatAreNotPowers = [];
     if (defs_1.ismultiply(secondTerm)) {
         // product of factors
         let secondTermFactor = defs_1.cdr(secondTerm);
         if (defs_1.iscons(secondTermFactor)) {
             while (defs_1.iscons(secondTermFactor)) {
-                const potentialPower = defs_1.car(secondTermFactor);
+                var potentialPower = defs_1.car(secondTermFactor);
                 if (defs_1.ispower(potentialPower)) {
-                    const innerbase = defs_1.cadr(potentialPower);
-                    const innerexponent = defs_1.caddr(potentialPower);
+                    var innerbase = defs_1.cadr(potentialPower);
+                    var innerexponent = defs_1.caddr(potentialPower);
                     if (is_1.equalq(innerexponent, 1, 2)) {
                         if (commonInnerExponent == null) {
                             commonInnerExponent = innerexponent;
@@ -578,8 +578,8 @@ function _listAll(secondTerm) {
         }
     }
     else if (defs_1.ispower(secondTerm)) {
-        const innerbase = defs_1.cadr(secondTerm);
-        const innerexponent = defs_1.caddr(secondTerm);
+        var innerbase = defs_1.cadr(secondTerm);
+        var innerexponent = defs_1.caddr(secondTerm);
         if (commonInnerExponent == null && is_1.equalq(innerexponent, 1, 2)) {
             commonInnerExponent = innerexponent;
             commonBases.push(innerbase);
@@ -589,9 +589,9 @@ function _listAll(secondTerm) {
 }
 function _nestedCons(p1) {
     let anyRadicalSimplificationWorked = false;
-    const arr = [];
+    var arr = [];
     if (defs_1.iscons(p1)) {
-        const items = Array.from(p1).map((p) => {
+        var items = Array.from(p1).map((p) => {
             if (!anyRadicalSimplificationWorked) {
                 let p2;
                 [p2, anyRadicalSimplificationWorked] = take_care_of_nested_radicals(p);
