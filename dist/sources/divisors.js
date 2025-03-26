@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ydivisors = exports.divisors = void 0;
-const gcd_1 = require("./gcd");
-const alloc_1 = require("../runtime/alloc");
-const defs_1 = require("../runtime/defs");
-const misc_1 = require("../sources/misc");
-const add_1 = require("./add");
-const bignum_1 = require("./bignum");
-const factor_1 = require("./factor");
-const is_1 = require("./is");
-const multiply_1 = require("./multiply");
-const power_1 = require("./power");
+var gcd_1 = require("./gcd");
+var alloc_1 = require("../runtime/alloc");
+var defs_1 = require("../runtime/defs");
+var misc_1 = require("../sources/misc");
+var add_1 = require("./add");
+var bignum_1 = require("./bignum");
+var factor_1 = require("./factor");
+var is_1 = require("./is");
+var multiply_1 = require("./multiply");
+var power_1 = require("./power");
 //-----------------------------------------------------------------------------
 //
 //  Generate all divisors of a term
@@ -21,19 +21,19 @@ const power_1 = require("./power");
 //
 //-----------------------------------------------------------------------------
 function divisors(p) {
-    const values = ydivisors(p);
-    const n = values.length;
+    var values = ydivisors(p);
+    var n = values.length;
     values.sort(misc_1.cmp_expr);
-    const p1 = alloc_1.alloc_tensor(n);
+    var p1 = alloc_1.alloc_tensor(n);
     p1.tensor.ndim = 1;
     p1.tensor.dim[0] = n;
     p1.tensor.elem = values;
     return p1;
 }
 exports.divisors = divisors;
-const flatten = (arr) => [].concat(...arr);
+var flatten = (arr) => [].concat(...arr);
 function ydivisors(p1) {
-    const stack = [];
+    var stack = [];
     // push all of the term's factors
     if (defs_1.isNumericAtom(p1)) {
         stack.push(...factor_1.factor_small_number(bignum_1.nativeInt(p1)));
@@ -48,7 +48,7 @@ function ydivisors(p1) {
             p1 = defs_1.cdr(p1);
         }
         if (defs_1.iscons(p1)) {
-            const mapped = [...p1].map((p2) => {
+            var mapped = [...p1].map((p2) => {
                 if (defs_1.ispower(p2)) {
                     return [defs_1.cadr(p2), defs_1.caddr(p2)];
                 }
@@ -63,7 +63,7 @@ function ydivisors(p1) {
     else {
         stack.push(p1, defs_1.Constants.one);
     }
-    const k = stack.length;
+    var k = stack.length;
     // contruct divisors by recursive descent
     stack.push(defs_1.Constants.one);
     gen(stack, 0, k);
@@ -93,14 +93,14 @@ exports.ydivisors = ydivisors;
 //
 //-----------------------------------------------------------------------------
 function gen(stack, h, k) {
-    const ACCUM = stack.pop();
+    var ACCUM = stack.pop();
     if (h === k) {
         stack.push(ACCUM);
         return;
     }
-    const BASE = stack[h + 0];
-    const EXPO = stack[h + 1];
-    const expo = bignum_1.nativeInt(EXPO);
+    var BASE = stack[h + 0];
+    var EXPO = stack[h + 1];
+    var expo = bignum_1.nativeInt(EXPO);
     if (!isNaN(expo)) {
         for (let i = 0; i <= Math.abs(expo); i++) {
             stack.push(multiply_1.multiply(ACCUM, power_1.power(BASE, bignum_1.integer(misc_1.sign(expo) * i))));
@@ -122,8 +122,8 @@ function gen(stack, h, k) {
 //-----------------------------------------------------------------------------
 function __factor_add(p1) {
     // get gcd of all terms
-    const temp1 = defs_1.iscons(p1) ? p1.tail().reduce(gcd_1.gcd) : defs_1.car(p1);
-    const stack = [];
+    var temp1 = defs_1.iscons(p1) ? p1.tail().reduce(gcd_1.gcd) : defs_1.car(p1);
+    var stack = [];
     // check gcd
     let p2 = temp1;
     if (is_1.isplusone(p2)) {
@@ -151,7 +151,7 @@ function __factor_add(p1) {
     }
     // divide each term by gcd
     p2 = multiply_1.inverse(p2);
-    const temp2 = defs_1.iscons(p1)
+    var temp2 = defs_1.iscons(p1)
         ? p1.tail().reduce((a, b) => add_1.add(a, multiply_1.multiply(p2, b)), defs_1.Constants.zero)
         : defs_1.cdr(p1);
     stack.push(temp2, defs_1.Constants.one);
