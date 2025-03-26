@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dupl = exports.swap = exports.restore = exports.save = exports.pop_n_items = exports.pop = exports.top = exports.moveTos = exports.push_all = exports.push = void 0;
-const run_1 = require("./run");
-const defs_1 = require("./defs");
+var run_1 = require("./run");
+var defs_1 = require("./defs");
 //   _______
 //  |  | <- stack
 //  |  |
@@ -98,7 +98,7 @@ function pop() {
     if (top() == null) {
         defs_1.breakpoint;
     }
-    const elementToBeReturned = defs_1.defs.stack[--defs_1.defs.tos];
+    var elementToBeReturned = defs_1.defs.stack[--defs_1.defs.tos];
     // give a chance to the garbage
     // collection to reclaim space
     // This is JS-specific, it would
@@ -117,7 +117,7 @@ exports.pop = pop;
  * Remaining Use: list.ts, multiply.ts
  */
 function pop_n_items(n) {
-    const items = [];
+    var items = [];
     for (let i = 0; i < n; i++) {
         items.push(pop());
     }
@@ -164,8 +164,8 @@ exports.restore = restore;
 // Local U * is OK here because there is no functional path to the garbage collector.
 function swap() {
     //U *p, *q
-    const p = pop();
-    const q = pop();
+    var p = pop();
+    var q = pop();
     push(p);
     push(q);
 }
@@ -173,7 +173,7 @@ exports.swap = swap;
 // Local U * is OK here because there is no functional path to the garbage collector.
 function dupl() {
     //U *p
-    const p = pop();
+    var p = pop();
     push(p);
     return push(p);
 }
