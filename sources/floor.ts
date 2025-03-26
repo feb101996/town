@@ -36,7 +36,7 @@ function yyfloor(p1: U): U {
     return p1;
   }
 
-  let p3: U = new Num(mdiv(p1.q.a, p1.q.b));
+  const p3: U = new Num(mdiv(p1.q.a, p1.q.b));
 
   if (isnegativenumber(p1)) {
     p3 = add(p3, Constants.negOne);
