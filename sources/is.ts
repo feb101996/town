@@ -96,7 +96,7 @@ export function isZeroLikeOrNonZeroLikeOrUndetermined(
   valueOrPredicate: U
 ): boolean | null {
   // just like Eval but turns assignments into equality checks
-  let evalledArgument = Eval_predicate(valueOrPredicate);
+  var evalledArgument = Eval_predicate(valueOrPredicate);
 
   // OK first check if we already have
   // a simple zero (or simple zero tensor)
@@ -117,7 +117,7 @@ export function isZeroLikeOrNonZeroLikeOrUndetermined(
   // is not a zero and not a simple numeric value.
   // e.g. stuff like
   // 'sqrt(2)', or 'sin(45)' or '1+i', or 'a'
-  // so in such cases let's try to do a float()
+  // so in such cases var's try to do a float()
   // so we might get down to a simple numeric value
   // in some of those cases
   evalledArgument = zzfloat(evalledArgument);
@@ -129,7 +129,7 @@ export function isZeroLikeOrNonZeroLikeOrUndetermined(
   // (Everything else are things that don't have a numeric
   // value e.g. 'a+b')
 
-  // So, let's take care of the case where we have
+  // So, var's take care of the case where we have
   // a simple numeric value with NO imaginary component,
   // things like sqrt(2) or sin(PI)
   // by doing the simple numeric
@@ -147,7 +147,7 @@ export function isZeroLikeOrNonZeroLikeOrUndetermined(
   // WITH an imaginary component e.g. '1+i',
   // or things that don't have a numeric value e.g. 'a'
 
-  // so now let's take care of the imaginary numbers:
+  // so now var's take care of the imaginary numbers:
   // since we JUST have to spot "zeros" we can just
   // calculate the absolute value and re-do all the checks
   // we just did
@@ -647,7 +647,7 @@ export function isimaginaryunit(p: U): boolean {
 //  3  i
 //  4  -i
 export function isquarterturn(p: U): 0 | 1 | 2 | 3 | 4 {
-  let minussign = 0;
+  var minussign = 0;
 
   if (!ismultiply(p)) {
     return 0;
@@ -681,7 +681,7 @@ export function isquarterturn(p: U): 0 | 1 | 2 | 3 | 4 {
     return 0;
   }
 
-  let n = nativeInt(multiply(cadr(p), integer(2)));
+  var n = nativeInt(multiply(cadr(p), integer(2)));
   if (isNaN(n)) {
     return 0;
   }
@@ -713,7 +713,7 @@ export function isquarterturn(p: U): 0 | 1 | 2 | 3 | 4 {
 //  -4/2  -3/2  -2/2  -1/2  1/2  2/2  3/2  4/2
 //  4  1  2  3  1  2  3  4
 export function isnpi(p: U) {
-  let n = 0;
+  var n = 0;
   if (p === symbol(PI)) {
     return 2;
   }
