@@ -6,7 +6,7 @@ import { divide, inverse } from './multiply';
 // Find the least common multiple of two expressions.
 export function Eval_lcm(p1: U) {
   p1 = cdr(p1);
-  let result = Eval(car(p1));
+  const result = Eval(car(p1));
   if (iscons(p1)) {
     result = p1.tail().reduce((a: U, b: U) => lcm(a, Eval(b)), result);
   }
