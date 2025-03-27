@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.subst = void 0;
-const alloc_1 = require("../runtime/alloc");
-const defs_1 = require("../runtime/defs");
-const misc_1 = require("../sources/misc");
-const tensor_1 = require("./tensor");
+let alloc_1 = require("../runtime/alloc");
+let defs_1 = require("../runtime/defs");
+let misc_1 = require("../sources/misc");
+let tensor_1 = require("./tensor");
 /*
   Substitute new expr for old expr in expr.
 
@@ -19,11 +19,11 @@ function subst(expr, oldExpr, newExpr) {
         return expr;
     }
     if (defs_1.istensor(expr)) {
-        const p4 = alloc_1.alloc_tensor(expr.tensor.nelem);
+        let p4 = alloc_1.alloc_tensor(expr.tensor.nelem);
         p4.tensor.ndim = expr.tensor.ndim;
         p4.tensor.dim = Array.from(expr.tensor.dim);
         p4.tensor.elem = expr.tensor.elem.map((el) => {
-            const result = subst(el, oldExpr, newExpr);
+            let result = subst(el, oldExpr, newExpr);
             tensor_1.check_tensor_dimensions(p4);
             return result;
         });
