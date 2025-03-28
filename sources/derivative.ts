@@ -89,7 +89,7 @@ export function Eval_derivative(p1: U): U {
   p1 = cdr(p1);
 
   let X: U, N: U;
-  const p2 = Eval(car(p1));
+  var p2 = Eval(car(p1));
   if (p2 === symbol(NIL)) {
     X = guess(F);
     N = symbol(NIL);
@@ -192,7 +192,7 @@ function d_scalar_scalar(p1: U, p2: U): U {
 
   // Example: d(sin(cos(x)),cos(x))
   // Replace cos(x) <- X, find derivative, then do X <- cos(x)
-  const arg1 = subst(p1, p2, symbol(SECRETX)); // p1: sin(cos(x)), p2: cos(x), symbol(SECRETX): X => sin(cos(x)) -> sin(X)
+  var arg1 = subst(p1, p2, symbol(SECRETX)); // p1: sin(cos(x)), p2: cos(x), symbol(SECRETX): X => sin(cos(x)) -> sin(X)
   return subst(derivative(arg1, symbol(SECRETX)), symbol(SECRETX), p2); // p2:  cos(x)  =>  cos(X) -> cos(cos(x))
 }
 
@@ -272,15 +272,15 @@ function d_scalar_scalar_1(p1: U, p2: Sym): U {
 }
 
 function dsum(p1: U, p2: Sym): U {
-  const toAdd = iscons(p1) ? p1.tail().map((el) => derivative(el, p2)) : [];
+  var toAdd = iscons(p1) ? p1.tail().map((el) => derivative(el, p2)) : [];
   return add_all(toAdd);
 }
 
 function dproduct(p1: U, p2: Sym): U {
-  const n = length(p1) - 1;
-  const toAdd: U[] = [];
+  var n = length(p1) - 1;
+  var toAdd: U[] = [];
   for (let i = 0; i < n; i++) {
-    const arr: U[] = [];
+    var arr: U[] = [];
     let p3 = cdr(p1);
     for (let j = 0; j < n; j++) {
       let temp = car(p3);
@@ -314,23 +314,23 @@ function dproduct(p1: U, p2: Sym): U {
 
 function dpower(p1: U, p2: Sym): U {
   // v/u
-  const arg1 = divide(caddr(p1), cadr(p1));
+  var arg1 = divide(caddr(p1), cadr(p1));
 
   // du/dx
-  const deriv_1 = derivative(cadr(p1), p2);
+  var deriv_1 = derivative(cadr(p1), p2);
 
   // log u
-  const log_1 = logarithm(cadr(p1));
+  var log_1 = logarithm(cadr(p1));
 
   // dv/dx
-  const deriv_2 = derivative(caddr(p1), p2);
+  var deriv_2 = derivative(caddr(p1), p2);
 
   // u^v
   return multiply(add(multiply(arg1, deriv_1), multiply(log_1, deriv_2)), p1);
 }
 
 function dlog(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return divide(deriv, cadr(p1));
 }
 
@@ -347,7 +347,7 @@ function dlog(p1: U, p2: Sym): U {
 //  caddr(p1) = y
 function dd(p1: U, p2: Sym): U {
   // d(f(x,y),x)
-  const p3 = derivative(cadr(p1), p2);
+  var p3 = derivative(cadr(p1), p2);
 
   if (car(p3) === symbol(DERIVATIVE)) {
     // sort dx terms
@@ -371,7 +371,7 @@ function dd(p1: U, p2: Sym): U {
 
 // derivative of a generic function
 function dfunction(p1: U, p2: Sym): U {
-  const p3 = cdr(p1); // p3 is the argument list for the function
+  var p3 = cdr(p1); // p3 is the argument list for the function
 
   if (p3 === symbol(NIL) || Find(p3, p2)) {
     return makeList(symbol(DERIVATIVE), p1, p2);
@@ -380,22 +380,22 @@ function dfunction(p1: U, p2: Sym): U {
 }
 
 function dsin(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(deriv, cosine(cadr(p1)));
 }
 
 function dcos(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return negate(multiply(deriv, sine(cadr(p1))));
 }
 
 function dtan(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(deriv, power(cosine(cadr(p1)), integer(-2)));
 }
 
 function darcsin(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(
     deriv,
     power(subtract(Constants.one, power(cadr(p1), integer(2))), rational(-1, 2))
@@ -403,7 +403,7 @@ function darcsin(p1: U, p2: Sym): U {
 }
 
 function darccos(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return negate(
     multiply(
       deriv,
@@ -421,29 +421,29 @@ function darccos(p1: U, p2: Sym): U {
 //
 //  d(arctan(y/x),y)  1/(x*(y^2/x^2+1))  x/(x^2+y^2)
 function darctan(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return simplify(
     multiply(deriv, inverse(add(Constants.one, power(cadr(p1), integer(2)))))
   );
 }
 
 function dsinh(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(deriv, ycosh(cadr(p1)));
 }
 
 function dcosh(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(deriv, ysinh(cadr(p1)));
 }
 
 function dtanh(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(deriv, power(ycosh(cadr(p1)), integer(-2)));
 }
 
 function darcsinh(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(
     deriv,
     power(add(power(cadr(p1), integer(2)), Constants.one), rational(-1, 2))
@@ -451,7 +451,7 @@ function darcsinh(p1: U, p2: Sym): U {
 }
 
 function darccosh(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(
     deriv,
     power(add(power(cadr(p1), integer(2)), Constants.negOne), rational(-1, 2))
@@ -459,7 +459,7 @@ function darccosh(p1: U, p2: Sym): U {
 }
 
 function darctanh(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(
     deriv,
     inverse(subtract(Constants.one, power(cadr(p1), integer(2))))
@@ -467,17 +467,17 @@ function darctanh(p1: U, p2: Sym): U {
 }
 
 function dabs(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(deriv, sgn(cadr(p1)));
 }
 
 function dsgn(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(multiply(deriv, dirac(cadr(p1))), integer(2));
 }
 
 function dhermite(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(
     multiply(deriv, multiply(integer(2), caddr(p1))),
     hermite(cadr(p1), add(caddr(p1), Constants.negOne))
@@ -485,7 +485,7 @@ function dhermite(p1: U, p2: Sym): U {
 }
 
 function derf(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(
     multiply(
       multiply(
@@ -499,7 +499,7 @@ function derf(p1: U, p2: Sym): U {
 }
 
 function derfc(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(
     multiply(
       multiply(
@@ -520,7 +520,7 @@ function dbesselj(p1: U, p2: Sym): U {
 }
 
 function dbesselj0(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(
     multiply(deriv, besselj(cadr(p1), Constants.one)),
     Constants.negOne
@@ -528,7 +528,7 @@ function dbesselj0(p1: U, p2: Sym): U {
 }
 
 function dbesseljn(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(
     deriv,
     add(
@@ -549,7 +549,7 @@ function dbessely(p1: U, p2: Sym): U {
 }
 
 function dbessely0(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(
     multiply(deriv, besselj(cadr(p1), Constants.one)),
     Constants.negOne
@@ -557,7 +557,7 @@ function dbessely0(p1: U, p2: Sym): U {
 }
 
 function dbesselyn(p1: U, p2: Sym): U {
-  const deriv = derivative(cadr(p1), p2);
+  var deriv = derivative(cadr(p1), p2);
   return multiply(
     deriv,
     add(
