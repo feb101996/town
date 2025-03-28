@@ -90,21 +90,21 @@ class glyph {
 }
 
 // will contain glyphs
-let chartab: glyph[] = [];
-for (let charTabIndex = 0; charTabIndex < YMAX; charTabIndex++) {
+var chartab: glyph[] = [];
+for (var charTabIndex = 0; charTabIndex < YMAX; charTabIndex++) {
   chartab[charTabIndex] = new glyph();
 }
 
-let yindex = 0;
-let level = 0;
-let emit_x = 0;
-let expr_level = 0;
+var yindex = 0;
+var level = 0;
+var emit_x = 0;
+var expr_level = 0;
 
 // this is not really the translated version,
 // the original is in window.cpp and is
 // rather more complex
 function printchar_nowrap(character: string | number) {
-  let accumulator = '';
+  var accumulator = '';
   accumulator += character;
   return accumulator;
 }
@@ -267,7 +267,7 @@ function isdenominator(p: U): boolean {
 }
 
 function count_denominators(p: U) {
-  let count = 0;
+  var count = 0;
   p = cdr(p);
   //  if (isfraction(car(p))) {
   //    count++
@@ -314,15 +314,15 @@ function emit_multiply(p: U, n: number) {
 
 // sign of term has already been emitted
 function emit_fraction(p: U, d: number) {
-  let p1: U, p2: U;
-  let count = 0;
-  let k1 = 0;
-  let k2 = 0;
-  let n = 0;
-  let x = 0;
+  var p1: U, p2: U;
+  var count = 0;
+  var k1 = 0;
+  var k2 = 0;
+  var n = 0;
+  var x = 0;
 
-  let A: U = Constants.one;
-  let B: U = Constants.one;
+  var A: U = Constants.one;
+  var B: U = Constants.one;
 
   // handle numerical coefficient
   if (isrational(cadr(p))) {
@@ -424,7 +424,7 @@ function emit_fraction(p: U, d: number) {
 
 // p points to a multiply
 function emit_numerators(p: U) {
-  let p1: U = Constants.one;
+  var p1: U = Constants.one;
 
   p = cdr(p);
 
@@ -436,7 +436,7 @@ function emit_numerators(p: U) {
     p = cdr(p);
   }
 
-  let n = 0;
+  var n = 0;
 
   if (!isplusone(p1)) {
     emit_number(p1, 0);
@@ -461,7 +461,7 @@ function emit_numerators(p: U) {
 
 // p points to a multiply
 function emit_denominators(p: U) {
-  let n = 0;
+  var n = 0;
 
   p = cdr(p);
 
@@ -545,7 +545,7 @@ function emit_numerical_fraction(p: U) {
     return;
   }
 
-  let x = emit_x;
+  var x = emit_x;
 
   const k1 = yindex;
 
@@ -579,9 +579,9 @@ function isfactor(p: U): boolean {
 }
 
 function emit_power(p: U) {
-  let k1 = 0;
-  let k2 = 0;
-  let x = 0;
+  var k1 = 0;
+  var k2 = 0;
+  var x = 0;
 
   if (cadr(p) === symbol(E)) {
     __emit_str('exp(');
@@ -644,8 +644,8 @@ function emit_power(p: U) {
 // if n == 1 then emit as expr (no parens)
 // p is a power
 function emit_denominator(p: U, n: number) {
-  let k1 = 0;
-  let k2 = 0;
+  var k1 = 0;
+  var k2 = 0;
 
   // special case: 1 over something
 
@@ -766,7 +766,7 @@ function emit_symbol(p: Sym) {
 
   const pPrintName = get_printname(p);
 
-  for (let i = 0; i < pPrintName.length; i++) {
+  for (var i = 0; i < pPrintName.length; i++) {
     __emit_char(pPrintName[i]);
   }
 }
@@ -774,15 +774,15 @@ function emit_symbol(p: Sym) {
 function emit_string(p: Str) {
   const pString = p.str;
   __emit_char('"');
-  for (let i = 0; i < pString.length; i++) {
+  for (var i = 0; i < pString.length; i++) {
     __emit_char(pString[i]);
   }
   __emit_char('"');
 }
 
 function fixup_fraction(x, k1: number, k2: number) {
-  let dx = 0;
-  let dy = 0;
+  var dx = 0;
+  var dy = 0;
 
   const [h1, w1, y1] = Array.from(get_size(k1, k2));
   const [h2, w2, y2] = Array.from(get_size(k2, yindex));
@@ -812,7 +812,7 @@ function fixup_fraction(x, k1: number, k2: number) {
 
   move(k2, yindex, dx, dy);
 
-  let w = 0;
+  var w = 0;
   if (w2 > w1) {
     w = w2;
   } else {
@@ -822,19 +822,19 @@ function fixup_fraction(x, k1: number, k2: number) {
   w += 2;
   emit_x = x;
 
-  for (let i = 0; i < w; i++) {
+  for (var i = 0; i < w; i++) {
     __emit_char('-');
   }
 }
 
 function fixup_power(k1: number, k2: number) {
-  let dy = 0;
-  let h1 = 0;
-  let w1 = 0;
-  let y1 = 0;
-  let h2 = 0;
-  let w2 = 0;
-  let y2 = 0;
+  var dy = 0;
+  var h1 = 0;
+  var w1 = 0;
+  var y1 = 0;
+  var h2 = 0;
+  var w2 = 0;
+  var y2 = 0;
 
   [h1, w1, y1] = Array.from(get_size(k1, k2));
   [h2, w2, y2] = Array.from(get_size(k2, yindex));
@@ -849,7 +849,7 @@ function fixup_power(k1: number, k2: number) {
 }
 
 function move(j: number, k: number, dx: number, dy: number) {
-  for (let i = j; i < k; i++) {
+  for (var i = j; i < k; i++) {
     chartab[i].x += dx;
     chartab[i].y += dy;
   }
@@ -857,11 +857,11 @@ function move(j: number, k: number, dx: number, dy: number) {
 
 // finds the bounding rectangle and vertical position
 function get_size(j: number, k: number) {
-  let min_x = chartab[j].x;
-  let max_x = chartab[j].x;
-  let min_y = chartab[j].y;
-  let max_y = chartab[j].y;
-  for (let i = j + 1; i < k; i++) {
+  var min_x = chartab[j].x;
+  var max_x = chartab[j].x;
+  var min_y = chartab[j].y;
+  var max_y = chartab[j].y;
+  for (var i = j + 1; i < k; i++) {
     if (chartab[i].x < min_x) {
       min_x = chartab[i].x;
     }
@@ -896,20 +896,20 @@ function __emit_char(c) {
 }
 
 function __emit_str(s: string) {
-  for (let i = 0; i < s.length; i++) {
+  for (var i = 0; i < s.length; i++) {
     __emit_char(s[i]);
   }
 }
 
 function emit_number(p: U, emit_sign: number) {
-  let tmpString = '';
+  var tmpString = '';
   switch (p.k) {
     case NUM:
       tmpString = p.q.a.toString();
       if (tmpString[0] === '-' && emit_sign === 0) {
         tmpString = tmpString.substring(1);
       }
-      for (let i = 0; i < tmpString.length; i++) {
+      for (var i = 0; i < tmpString.length; i++) {
         __emit_char(tmpString[i]);
       }
       tmpString = p.q.b.toString();
@@ -917,7 +917,7 @@ function emit_number(p: U, emit_sign: number) {
         break;
       }
       __emit_char('/');
-      for (let i = 0; i < tmpString.length; i++) {
+      for (var i = 0; i < tmpString.length; i++) {
         __emit_char(tmpString[i]);
       }
       break;
@@ -926,7 +926,7 @@ function emit_number(p: U, emit_sign: number) {
       if (tmpString[0] === '-' && emit_sign === 0) {
         tmpString = tmpString.substring(1);
       }
-      for (let i = 0; i < tmpString.length; i++) {
+      for (var i = 0; i < tmpString.length; i++) {
         __emit_char(tmpString[i]);
       }
       break;
@@ -955,7 +955,7 @@ function cmpGlyphs(a: glyph, b: glyph): Sign {
 }
 
 function print_glyphs() {
-  let accumulator = '';
+  var accumulator = '';
 
   // now sort the glyphs by their vertical positions,
   // since we are going to build a string where obviously the
@@ -966,10 +966,10 @@ function print_glyphs() {
   subsetOfStack.sort(cmpGlyphs);
   chartab = [].concat(subsetOfStack).concat(chartab.slice(yindex));
 
-  let x = 0;
-  let { y } = chartab[0];
+  var x = 0;
+  var { y } = chartab[0];
 
-  for (let i = 0; i < yindex; i++) {
+  for (var i = 0; i < yindex; i++) {
     while (chartab[i].y > y) {
       accumulator += printchar('\n');
       x = 0;
@@ -1001,7 +1001,7 @@ class oneElement {
 }
 
 const elem: oneElement[] = [];
-for (let elelmIndex = 0; elelmIndex < 10000; elelmIndex++) {
+for (var elelmIndex = 0; elelmIndex < 10000; elelmIndex++) {
   elem[elelmIndex] = new oneElement();
 }
 
@@ -1009,9 +1009,9 @@ const SPACE_BETWEEN_COLUMNS = 3;
 const SPACE_BETWEEN_ROWS = 1;
 
 function emit_tensor(p: Tensor<U>) {
-  let ncol = 0;
-  let dx = 0;
-  let dy = 0;
+  var ncol = 0;
+  var dx = 0;
+  var dy = 0;
 
   if (p.tensor.ndim > 2) {
     emit_flat_tensor(p);
@@ -1042,7 +1042,7 @@ function emit_tensor(p: Tensor<U>) {
   const x = emit_x;
 
   // emit each element
-  for (let i = 0; i < n; i++) {
+  for (var i = 0; i < n; i++) {
     elem[i].index = yindex;
     elem[i].x = emit_x;
     emit_expr(p.tensor.elem[i]);
@@ -1053,10 +1053,10 @@ function emit_tensor(p: Tensor<U>) {
   }
 
   // find element height and width
-  let eh = 0;
-  let ew = 0;
+  var eh = 0;
+  var ew = 0;
 
-  for (let i = 0; i < n; i++) {
+  for (var i = 0; i < n; i++) {
     if (elem[i].h > eh) {
       eh = elem[i].h;
     }
@@ -1075,9 +1075,9 @@ function emit_tensor(p: Tensor<U>) {
   const y = -(h / 2);
 
   // move elements around
-  for (let row = 0; row < nrow; row++) {
-    for (let col = 0; col < ncol; col++) {
-      let i = row * ncol + col;
+  for (var row = 0; row < nrow; row++) {
+    for (var col = 0; col < ncol; col++) {
+      var i = row * ncol + col;
 
       // first move to upper left corner of matrix
       dx = x - elem[i].x;
@@ -1149,7 +1149,7 @@ function emit_flat_tensor(p: Tensor<U>) {
 
 function emit_tensor_inner(p, j, k) {
   __emit_char('(');
-  for (let i = 0; i < p.tensor.dim[j]; i++) {
+  for (var i = 0; i < p.tensor.dim[j]; i++) {
     if (j + 1 === p.tensor.ndim) {
       emit_expr(p.tensor.elem[k]);
       k = k + 1;
