@@ -1,16 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logarithm = exports.Eval_log = void 0;
-const defs_1 = require("../runtime/defs");
-const stack_1 = require("../runtime/stack");
-const add_1 = require("./add");
-const bignum_1 = require("./bignum");
-const denominator_1 = require("./denominator");
-const eval_1 = require("./eval");
-const is_1 = require("./is");
-const list_1 = require("./list");
-const multiply_1 = require("./multiply");
-const numerator_1 = require("./numerator");
+let defs_1 = require("../runtime/defs");
+let stack_1 = require("../runtime/stack");
+let add_1 = require("./add");
+let bignum_1 = require("./bignum");
+let denominator_1 = require("./denominator");
+let eval_1 = require("./eval");
+let is_1 = require("./is");
+let list_1 = require("./list");
+let multiply_1 = require("./multiply");
+let numerator_1 = require("./numerator");
 // Natural logarithm.
 //
 // Note that we use the mathematics / Javascript / Mathematica
@@ -20,7 +20,7 @@ const numerator_1 = require("./numerator");
 // for the "common" logarithm i.e. base 10. Also note that Google
 // calculations use log for the common logarithm.
 function Eval_log(p1) {
-    const result = logarithm(eval_1.Eval(defs_1.cadr(p1)));
+    let result = logarithm(eval_1.Eval(defs_1.cadr(p1)));
     stack_1.push(result);
 }
 exports.Eval_log = Eval_log;
