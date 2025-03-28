@@ -21,15 +21,15 @@ Result
 The result is undefined if P is not a polynomial.
 */
 export function Eval_leading(p1: U) {
-  const P = Eval(cadr(p1));
+  let P = Eval(cadr(p1));
   p1 = Eval(caddr(p1));
-  const X = p1 === symbol(NIL) ? guess(P) : p1;
+  let X = p1 === symbol(NIL) ? guess(P) : p1;
   return leading(P, X);
 }
 
 function leading(P: U, X: U) {
   // N = degree of P
-  const N = degree(P, X);
+  let N = degree(P, X);
 
   // divide through by X ^ N, remove terms that depend on X
   return filter(divide(P, power(X, N)), X);
