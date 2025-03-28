@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.mroot = void 0;
-const big_integer_1 = __importDefault(require("big-integer"));
-const mcmp_1 = require("../runtime/mcmp");
-const run_1 = require("../runtime/run");
-const bignum_1 = require("./bignum");
-const mpow_1 = require("./mpow");
+var big_integer_1 = __importDefault(require("big-integer"));
+var mcmp_1 = require("../runtime/mcmp");
+var run_1 = require("../runtime/run");
+var bignum_1 = require("./bignum");
+var mpow_1 = require("./mpow");
 //-----------------------------------------------------------------------------
 //
 //  Bignum root
@@ -33,7 +33,7 @@ function mroot(n, index) {
     }
     // initial guess
     k = Math.floor((k - 1) / index);
-    const j = Math.floor(k / 32 + 1);
+    var j = Math.floor(k / 32 + 1);
     let x = big_integer_1.default(j);
     for (let i = 0; i < j; i++) {
         // zero-out the ith bit
@@ -42,7 +42,7 @@ function mroot(n, index) {
     while (k >= 0) {
         // set the kth bit
         x = x.or(big_integer_1.default(1).shiftLeft(k));
-        const y = mpow_1.mpow(x, index);
+        var y = mpow_1.mpow(x, index);
         switch (mcmp_1.mcmp(y, n)) {
             case 0:
                 return x;
