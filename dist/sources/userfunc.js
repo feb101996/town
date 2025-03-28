@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Eval_user_function = void 0;
-const defs_1 = require("../runtime/defs");
-const run_1 = require("../runtime/run");
-const stack_1 = require("../runtime/stack");
-const symbol_1 = require("../runtime/symbol");
-const derivative_1 = require("./derivative");
-const eval_1 = require("./eval");
-const list_1 = require("./list");
-const tensor_1 = require("./tensor");
+var defs_1 = require("../runtime/defs");
+var run_1 = require("../runtime/run");
+var stack_1 = require("../runtime/stack");
+var symbol_1 = require("../runtime/symbol");
+var derivative_1 = require("./derivative");
+var eval_1 = require("./eval");
+var list_1 = require("./list");
+var tensor_1 = require("./tensor");
 // Evaluate a user defined function
 // F is the function body
 // A is the formal argument list
@@ -55,7 +55,7 @@ function Eval_user_function(p1) {
     // has not been defined yet, then the
     // function will just contain its own name, as
     // all undefined variables do.
-    const bodyAndFormalArguments = eval_1.Eval(defs_1.car(p1));
+    var bodyAndFormalArguments = eval_1.Eval(defs_1.car(p1));
     if (defs_1.isNumericAtom(bodyAndFormalArguments)) {
         run_1.stop("expected function invocation, found multiplication instead. Use '*' symbol explicitly for multiplication.");
     }
@@ -81,7 +81,7 @@ function Eval_user_function(p1) {
         // next check is whether evaluation did nothing, so the function is undefined
         bodyAndFormalArguments === defs_1.car(p1)) {
         // leave everything as it was and return
-        const h = defs_1.defs.tos;
+        var h = defs_1.defs.tos;
         stack_1.push(bodyAndFormalArguments);
         p1 = B;
         while (defs_1.iscons(p1)) {
@@ -94,7 +94,7 @@ function Eval_user_function(p1) {
     // Create the argument substitution list S
     p1 = A;
     let p2 = B;
-    const h = defs_1.defs.tos;
+    var h = defs_1.defs.tos;
     while (defs_1.iscons(p1) && defs_1.iscons(p2)) {
         stack_1.push(defs_1.car(p1));
         stack_1.push(defs_1.car(p2));
@@ -106,7 +106,7 @@ function Eval_user_function(p1) {
         p2 = defs_1.cdr(p2);
     }
     list_1.list(defs_1.defs.tos - h);
-    const S = stack_1.pop();
+    var S = stack_1.pop();
     // Evaluate the function body
     stack_1.push(F);
     if (defs_1.iscons(S)) {
@@ -123,7 +123,7 @@ function rewrite_args() {
     // subst. list which is a list
     // where each consecutive pair
     // is what needs to be substituted and with what
-    const p2 = stack_1.pop();
+    var p2 = stack_1.pop();
     //console.log "subst. list " + p2
     // expr to substitute in i.e. the
     // function body
@@ -134,7 +134,7 @@ function rewrite_args() {
         return n;
     }
     if (defs_1.iscons(p1)) {
-        const h = defs_1.defs.tos;
+        var h = defs_1.defs.tos;
         if (defs_1.car(p1) === defs_1.car(p2)) {
             // rewrite a function in
             // the body with the one
