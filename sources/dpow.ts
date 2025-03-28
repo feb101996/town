@@ -16,9 +16,9 @@ export function dpow(base: number, expo: number) {
     return double(Math.pow(base, expo));
   }
 
-  const result = Math.pow(Math.abs(base), expo);
+  var result = Math.pow(Math.abs(base), expo);
 
-  const theta = Math.PI * expo;
+  var theta = Math.PI * expo;
 
   let a = 0.0;
   let b = 0.0;
