@@ -100,7 +100,7 @@ Notes
      automatic.
 */
 
-const DEBUG_ARG = false;
+let DEBUG_ARG = false;
 
 export function Eval_arg(z: U) {
   return arg(Eval(cadr(z)));
@@ -119,7 +119,7 @@ function yyarg(p1: U): U {
   }
 
   if (isnegativenumber(p1)) {
-    const pi =
+    let pi =
       isdouble(p1) || defs.evaluatingAsFloats
         ? Constants.piAsDouble
         : symbol(PI);
@@ -147,7 +147,7 @@ function yyarg(p1: U): U {
   }
 
   if (ispower(p1) && isoneovertwo(caddr(p1))) {
-    const arg1 = arg(cadr(p1));
+    let arg1 = arg(cadr(p1));
     if (DEBUG_ARG) {
       console.log(`arg of a sqrt: ${p1}`);
       breakpoint;
@@ -164,8 +164,8 @@ function yyarg(p1: U): U {
   if (isadd(p1)) {
     // sum of terms
     p1 = rect(p1);
-    const RE = real(p1);
-    const IM = imag(p1);
+    let RE = real(p1);
+    let IM = imag(p1);
     if (isZeroAtomOrTensor(RE)) {
       if (isnegative(IM)) {
         return negate(Constants.Pi());
@@ -173,7 +173,7 @@ function yyarg(p1: U): U {
         return Constants.Pi();
       }
     } else {
-      const arg1 = arctan(divide(IM, RE));
+      let arg1 = arctan(divide(IM, RE));
       if (isnegative(RE)) {
         if (isnegative(IM)) {
           return subtract(arg1, Constants.Pi()); // quadrant 1 -> 3
