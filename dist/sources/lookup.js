@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Eval_lookup = void 0;
-const defs_1 = require("../runtime/defs");
-const stack_1 = require("../runtime/stack");
-const symbol_1 = require("../runtime/symbol");
+let defs_1 = require("../runtime/defs");
+let stack_1 = require("../runtime/stack");
+let symbol_1 = require("../runtime/symbol");
 // now this might be a little confusing, so a
 // clarification is in order.
 // First off, at the scripting level most things
